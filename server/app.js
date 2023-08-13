@@ -3,6 +3,7 @@ const databaseConnect = require('./config/db');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const userRouter = require('./routes/auth.route');
+const todoRouter = require('./routes/todo.route');
 const app = express();
 
 databaseConnect();
@@ -17,6 +18,7 @@ app.use(cors({
 
 
 app.use('/api/auth', userRouter);
+app.use('/api/todo', todoRouter);
 
 // app.use('/',(req,res)=>{
 //     res.status(200).json({data: 'JWTauth server'})
