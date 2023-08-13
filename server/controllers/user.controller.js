@@ -94,6 +94,24 @@ const getuser = async (req, res, next) => {
     }
 }
 
+const updatUserProfile = async (req, res, next) => {
+    const {name, email} = req.body;
+    if (!email){
+        return res.sendStatus(503);
+    }
+    const user = await userModel.findOne({email});
+    if (!user) {
+        return res.status(404).json({success: false, message: 'User not existed'});
+    }
+    const userr = await userModel.updateOne({email},{name});
+    res.status(200).json({
+        success: true,
+        message:'Profile updated successfully',
+        userr
+    })
+    
+}
+
 const logout = (req, res, next) => {
     const cookieOption = {
         expires: new Date(),
@@ -113,4 +131,4 @@ const logout = (req, res, next) => {
     }
 }
 
-module.exports = { signup, signin, getuser, logout };
+module.exports = { signup, signin, getuser, updatUserProfile, logout };
