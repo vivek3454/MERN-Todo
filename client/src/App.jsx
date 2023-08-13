@@ -1,9 +1,15 @@
 import { useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Home from './pages/Home'
-import SignUp from './pages/SignUp'
-import SignIn from './pages/SignIn'
+import Home from './pages/todos/Home'
+import SignUp from './pages/auth/SignUp'
+import SignIn from './pages/auth/SignIn'
 import Navbar from './components/Navbar'
+import Welcome from './pages/todos/Welcome'
+import Todo from './pages/todos/Todo'
+import Completed from './pages/todos/Completed'
+import Pending from './pages/todos/Pending'
+import Profile from './pages/auth/Profile'
+import NotFound from './pages/notFound/NotFound'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -11,14 +17,18 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <div className='flex flex-col'>
-          <Navbar />
-          <Routes>
-            <Route path='*' element={<Home />} />
-            <Route path='/signup' element={<SignUp />} />
-            <Route path='/signin' element={<SignIn />} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path='/' element={<Home />} >
+            <Route index element={<Welcome />} />
+            <Route path='/todo' element={<Todo />} />
+            <Route path='/completed' element={<Completed />} />
+            <Route path='/pending' element={<Pending />} />
+            <Route path='/profile' element={<Profile />} />
+          </Route>
+          <Route path='/signup' element={<SignUp />} />
+          <Route path='/signin' element={<SignIn />} />
+          <Route path='/*' element={<NotFound />} />
+        </Routes>
       </BrowserRouter>
     </>
   )
