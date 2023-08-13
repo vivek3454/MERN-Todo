@@ -5,7 +5,7 @@ import SignUp from './pages/auth/SignUp'
 import SignIn from './pages/auth/SignIn'
 import Navbar from './components/Navbar'
 import Welcome from './pages/todos/Welcome'
-import Todo from './pages/todos/Todo'
+import AllTodos from './pages/todos/AllTodos'
 import Completed from './pages/todos/Completed'
 import Pending from './pages/todos/Pending'
 import Profile from './pages/auth/Profile'
@@ -20,7 +20,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} >
             <Route index element={<Welcome />} />
-            <Route path='/todo' element={<Todo />} />
+            <Route path='/todo' element={<AllTodos />} />
             <Route path='/completed' element={<Completed />} />
             <Route path='/pending' element={<Pending />} />
             <Route path='/profile' element={<Profile />} />
