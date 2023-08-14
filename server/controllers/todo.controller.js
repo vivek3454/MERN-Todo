@@ -20,7 +20,6 @@ const createTask = async (req,res,next)=>{
 const getAllTodos = async (req,res,next)=>{
     const {userId} = req.body;
     const todos = await todoModel.find({userId});
-    // todos.save();
 
     return res.status(200).json({
         success: true,
@@ -32,7 +31,6 @@ const getAllTodos = async (req,res,next)=>{
 const deleteTask = async (req,res,next)=>{
     const {_id} = req.body;
     const todos = await todoModel.findByIdAndDelete({_id});
-    // todos.save();
 
     return res.status(200).json({
         success: true,
@@ -42,7 +40,6 @@ const deleteTask = async (req,res,next)=>{
 const updateTask = async (req,res,next)=>{
     const {todo, _id} = req.body;
     const todos = await todoModel.findByIdAndUpdate({_id},{todo});
-    // todos.save();
 
     return res.status(200).json({
         success: true,
@@ -50,4 +47,23 @@ const updateTask = async (req,res,next)=>{
     })
 }
 
-module.exports = {createTask, getAllTodos, deleteTask, updateTask}
+const getPendingTasks = async (req,res,next)=>{
+    const pendingTodos = await todoModel.find({completed: false});
+
+    return res.status(200).json({
+        success: true,
+        message:"All Pending Tasks",
+        pendingTodos
+    })
+}
+const getcompletedTasks = async (req,res,next)=>{
+    const completedTodos = await todoModel.find({completed: true});
+
+    return res.status(200).json({
+        success: true,
+        message:"All Completed Tasks",
+        completedTodos
+    })
+}
+
+module.exports = {createTask, getAllTodos, deleteTask, updateTask, getPendingTasks, getcompletedTasks}
