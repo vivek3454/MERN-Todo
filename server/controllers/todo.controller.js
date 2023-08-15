@@ -66,4 +66,23 @@ const getcompletedTasks = async (req,res,next)=>{
     })
 }
 
-module.exports = {createTask, getAllTodos, deleteTask, updateTask, getPendingTasks, getcompletedTasks}
+const updateStatus = async (req,res,next)=>{
+    const {_id, completed} = req.body;
+    if (completed) {
+        await todoModel.findByIdAndUpdate({_id}, {completed: true});
+        return res.status(200).json({
+            success: true,
+            message:"Mark as Completed Tasks"
+        })
+    }
+    else{
+        await todoModel.findByIdAndUpdate({_id}, {completed: false});
+        return res.status(200).json({
+            success: true,
+            message:"Mark as Pending Tasks"
+        })
+    }
+
+}
+
+module.exports = {createTask, getAllTodos, deleteTask, updateTask, getPendingTasks, getcompletedTasks, updateStatus}
