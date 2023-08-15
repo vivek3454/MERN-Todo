@@ -4,6 +4,11 @@ import axios from 'axios';
 
 const Pending = () => {
   const [pendingTodos, setPendingTodos] = useState([]);
+  const fetchAllTask = async () => {
+    const { data: { data } } = await axios.post('http://localhost:5000/api/auth/user', { token: sessionStorage.getItem('token') });
+    const res = await axios.post('http://localhost:5000/api/todo/allTodos', { userId: data._id, token: sessionStorage.getItem('token') });
+    setPendingTodos(res.data.todos)
+  }
   useEffect(() => {
     const fetchPendingTask = async () => {
       const res = await axios.post('http://localhost:5000/api/todo/pending', { token: sessionStorage.getItem('token') });
@@ -19,7 +24,7 @@ const Pending = () => {
           pendingTodos.length !== 0 ?
             <div className="mt-10 flex flex-col items-start w-full">
               {pendingTodos.length !== 0 && pendingTodos.map((todo) => (
-                <Task key={todo.todo} todo={todo} />
+                <Task key={todo.todo} todo={todo} show={true} fun={fetchAllTask} />
               ))}
             </div>
             :
