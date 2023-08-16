@@ -19,10 +19,10 @@ const Pending = () => {
   }, [])
   
   return (
-      <div className='max-w-4xl w-full'>
+      <div className='max-w-4xl w-full mx-auto'>
         {
           pendingTodos.length !== 0 ?
-            <div className="mt-10 flex flex-col items-start w-full">
+            <div className="mt-10 flex flex-col items-center w-full">
               {pendingTodos.length !== 0 && pendingTodos.map((todo) => (
                 <Task key={todo.todo} todo={todo} show={true} fun={fetchAllTask} />
               ))}
