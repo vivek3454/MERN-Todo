@@ -14,7 +14,7 @@ const SignUp = () => {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5000/api/auth/signup', { ...userInfo });
+            await axios.post('https://todoblocks.onrender.com/api/auth/signup', { ...userInfo });
             navigate("/signin");
 
         } catch (error) {

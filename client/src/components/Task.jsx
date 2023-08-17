@@ -11,7 +11,7 @@ const Task = ({ todo, fun, show=false }) => {
     setInputBoxValue(todo.todo);
   }
   const handleSubmit = async () => {
-    await axios.post('http://localhost:5000/api/todo/update', { todo: inputBoxValue, _id: todo._id, token: sessionStorage.getItem('token') });
+    await axios.post('https://todoblocks.onrender.com/api/todo/update', { todo: inputBoxValue, _id: todo._id, token: sessionStorage.getItem('token') });
     fun();
     setIsInputBox(false);
   }
@@ -20,10 +20,10 @@ const Task = ({ todo, fun, show=false }) => {
   const handleCheckboxOnchange = async (e) => {
     let checked = e.target.checked;
     if (checked) {
-      await axios.post('http://localhost:5000/api/todo/status', { _id: todo._id, completed:true, token: sessionStorage.getItem('token') });
+      await axios.post('https://todoblocks.onrender.com/api/todo/status', { _id: todo._id, completed:true, token: sessionStorage.getItem('token') });
     }
     else{
-      await axios.post('http://localhost:5000/api/todo/status', { _id: todo._id, completed:false, token: sessionStorage.getItem('token') });
+      await axios.post('https://todoblocks.onrender.com/api/todo/status', { _id: todo._id, completed:false, token: sessionStorage.getItem('token') });
     }
   }
 
@@ -31,7 +31,7 @@ const Task = ({ todo, fun, show=false }) => {
     setInputBoxValue(e.target.value);
   }
   const handleDelete = async (id) => {
-    await axios.post('http://localhost:5000/api/todo/delete', { _id: id, token: sessionStorage.getItem('token') });
+    await axios.post('https://todoblocks.onrender.com/api/todo/delete', { _id: id, token: sessionStorage.getItem('token') });
     fun();
   }
   return (

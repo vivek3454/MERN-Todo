@@ -12,8 +12,9 @@ const Profile = () => {
 
     const handleLogout = async (e) => {
         if (e.target.textContent === 'Yes') {
-            await axios.get('http://localhost:5000/api/auth/logout');
+            await axios.get('https://todoblocks.onrender.com/api/auth/logout');
             setLogoutPopup(false);
+            sessionStorage.clear();
             navigate('/signin');
         }
         else {
@@ -23,7 +24,7 @@ const Profile = () => {
 
 
     const fetchUserDetail = async () => {
-        const { data: { data } } = await axios.post('http://localhost:5000/api/auth/user', { token: sessionStorage.getItem('token') });
+        const { data: { data } } = await axios.post('https://todoblocks.onrender.com/api/auth/user', { token: sessionStorage.getItem('token') });
         setUser({ name: data.name, email: data.email });
     }
     useEffect(() => {
@@ -37,10 +38,10 @@ const Profile = () => {
 
     const handleProfileUpdate = async (e) => {
         if (updatedName === '') {
-            // return;
+            return;
         }
         if (e.target.textContent === 'Submit' && updatedName !== '') {
-            const data = await axios.post('http://localhost:5000/api/auth/updatUserProfile', { name: updatedName, email: user.email, token: sessionStorage.getItem('token') });
+            const data = await axios.post('https://todoblocks.onrender.com/api/auth/updatUserProfile', { name: updatedName, email: user.email, token: sessionStorage.getItem('token') });
             fetchUserDetail()
             setIsUpdate(false);
             setUpdatedName('');

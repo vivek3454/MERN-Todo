@@ -33,8 +33,8 @@ const signupDataValidate = async (req, res, next) => {
     next();
 }
 const jwtAuth = (req, res, next) => {
-    // const token = req.body.token;
-    const token = req.cookies.token;
+    const token = req.body.token;
+    // const token = req.cookies.token;
     if (!token) {
         return res.status(400).json({
             succes: false,

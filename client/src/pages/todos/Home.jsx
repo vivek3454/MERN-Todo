@@ -1,6 +1,6 @@
-import React from 'react'
-import { Link, Route, Routes, useLocation } from 'react-router-dom'
-import Todo from './Todo';
+import React from 'react';
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import AllTodos from './AllTodos';
 import Welcome from './Welcome';
 import Pending from './Pending';
 import Completed from './Completed';
@@ -13,12 +13,13 @@ import Navbar from '../../components/Navbar';
 
 const Home = () => {
     const { pathname } = useLocation();
+    
     return (
         <>
             <Navbar />
-            <div className='flex h-[90vh]'>
-                <div className='w-64 shadow-[0px_10px_8px_#00000032] p-5 md:p-10 bg-white flex justify-center text-lg font-semibold max-[768px]:absolute bottom-0 left-0 right-0 max-[768px]:w-full'>
-                    <div className='flex flex-col gap-5 max-[768px]:flex-row'>
+            <div className='flex h-[86vh] overflow-auto'>
+                <div className='w-64 md:sticky md:top-0 shadow-[0px_10px_8px_#00000032] bg-white p-5 md:p-10  flex justify-center text-lg font-semibold max-[768px]:absolute  max-[768px]:bottom-0  max-[768px]:left-0  max-[768px]:right-0 max-[768px]:w-full'>
+                    <div className='flex w-full flex-col gap-5 max-[768px]:justify-between max-[768px]:flex-row'>
                         <Link to={'/todo'} className={`flex gap-2 items-center hover:bg-yellow-200 ${pathname === '/todo' ? 'bg-yellow-200' : 'bg-white'} px-2 py-1 rounded`}>
                             <FcTodoList className='text-3xl md:text-2xl' />
                             <span className='max-[500px]:hidden'>Todos</span>
@@ -37,11 +38,11 @@ const Home = () => {
                         </Link>
                     </div>
                 </div>
-                <div className='max-w-7xl w-full p-8'>
+                <div className='max-w-7xl w-full p-8 max-[500px]:p-2'>
 
                     <Routes>
                         <Route index path='/' element={<Welcome />} />
-                        <Route path='/todo' element={<Todo />} />
+                        <Route path='/todo' element={<AllTodos />} />
                         <Route path='/completed' element={<Completed />} />
                         <Route path='/pending' element={<Pending />} />
                         <Route path='/profile' element={<Profile />} />
