@@ -5,11 +5,11 @@ const todoRouter = express.Router();
 
 todoRouter.post('/create', jwtAuth, createTask);
 todoRouter.post('/allTodos', jwtAuth, getAllTodos);
-todoRouter.post('/delete', jwtAuth, deleteTask);
-todoRouter.post('/update', jwtAuth, updateTask);
+todoRouter.delete('/delete', jwtAuth, deleteTask);
+todoRouter.put('/update', jwtAuth, updateTask);
 todoRouter.post('/pending', jwtAuth, getPendingTasks);
 todoRouter.post('/completed', jwtAuth, getcompletedTasks);
-todoRouter.post('/status', jwtAuth, updateStatus);
+todoRouter.put('/status', jwtAuth, updateStatus);
 
 
 module.exports = todoRouter
