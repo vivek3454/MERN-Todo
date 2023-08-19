@@ -5,13 +5,13 @@ import Task from '../../components/Task';
 const Completed = () => {
   const [completedTodos, setCompletedTodos] = useState([]);
   const fetchAllTask = async () => {
-    const { data: { data } } = await axios.post('https://todoblocks.onrender.com/api/auth/user', { token: sessionStorage.getItem('token') });
-    const res = await axios.post('https://todoblocks.onrender.com/api/todo/allTodos', { userId: data._id, token: sessionStorage.getItem('token') });
+    const { data: { data } } = await axios.post('https://mern-todoblocks.onrender.com/api/auth/user', { token: sessionStorage.getItem('token') });
+    const res = await axios.post('https://mern-todoblocks.onrender.com/api/todo/allTodos', { userId: data._id, token: sessionStorage.getItem('token') });
     setCompletedTodos(res.data.todos)
   }
   useEffect(() => {
     const fetchCompletedTask = async () => {
-      const res = await axios.post('https://todoblocks.onrender.com/api/todo/completed', { token: sessionStorage.getItem('token') });
+      const res = await axios.post('https://mern-todoblocks.onrender.com/api/todo/completed', { token: sessionStorage.getItem('token') });
       setCompletedTodos(res.data.completedTodos);
     }
     fetchCompletedTask();

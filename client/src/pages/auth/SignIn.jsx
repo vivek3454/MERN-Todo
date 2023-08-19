@@ -16,7 +16,7 @@ const SignIn = () => {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('https://todoblocks.onrender.com/api/auth/signin', { ...userInfo, }, { credentials: 'true' });
+            const res = await axios.post('https://mern-todoblocks.onrender.com/api/auth/signin', { ...userInfo, }, { credentials: 'true' });
             sessionStorage.setItem('token', res.data.token);
             navigate("/");
 

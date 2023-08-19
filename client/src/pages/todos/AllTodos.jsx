@@ -7,15 +7,15 @@ const Todo = () => {
   const [allTodos, setAllTodos] = useState([]);
 
   const fetchAllTask = async () => {
-    const { data: { data } } = await axios.post('https://todoblocks.onrender.com/api/auth/user', { token: sessionStorage.getItem('token') });
-    const res = await axios.post('https://todoblocks.onrender.com/api/todo/allTodos', { userId: data._id, token: sessionStorage.getItem('token') });
+    const { data: { data } } = await axios.post('https://mern-todoblocks.onrender.com/api/auth/user', { token: sessionStorage.getItem('token') });
+    const res = await axios.post('https://mern-todoblocks.onrender.com/api/todo/allTodos', { userId: data._id, token: sessionStorage.getItem('token') });
     setAllTodos(res.data.todos)
   }
 
   const handleAddTask = async () => {
     if (task !== '') {
-      const { data: { data } } = await axios.post('https://todoblocks.onrender.com/api/auth/user', { token: sessionStorage.getItem('token') });
-      const res = await axios.post('https://todoblocks.onrender.com/api/todo/create', { task, userId: data._id, token: sessionStorage.getItem('token') });
+      const { data: { data } } = await axios.post('https://mern-todoblocks.onrender.com/api/auth/user', { token: sessionStorage.getItem('token') });
+      const res = await axios.post('https://mern-todoblocks.onrender.com/api/todo/create', { task, userId: data._id, token: sessionStorage.getItem('token') });
       fetchAllTask();
       setTask('');
     }
