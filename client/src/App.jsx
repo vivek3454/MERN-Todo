@@ -10,9 +10,10 @@ import Completed from './pages/todos/Completed'
 import Pending from './pages/todos/Pending'
 import Profile from './pages/auth/Profile'
 import NotFound from './pages/notFound/NotFound'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
@@ -30,6 +31,7 @@ function App() {
           <Route path='/*' element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+      <ToastContainer />
     </>
   )
 }
