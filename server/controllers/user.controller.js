@@ -2,7 +2,7 @@ const userModel = require("../model/user.model");
 const bcrypt = require('bcrypt');
 
 const signup = async (req, res, next) => {
-    const {name, email, password} = req.body;
+    const { name, email, password } = req.body;
     if (!name || !email || !password) {
         return res.status(400).json({
             success: false,
@@ -20,13 +20,13 @@ const signup = async (req, res, next) => {
         })
     } catch (err) {
         if (err.code === 11000) {
-            if (err.keyValue.email && err.keyValue.email === email) {  
+            if (err.keyValue.email && err.keyValue.email === email) {
                 return res.status(400).json({
                     success: false,
                     message: 'email address aleready existed'
                 })
             }
-            if (err.keyValue.username && err.keyValue.username === username) {  
+            if (err.keyValue.username && err.keyValue.username === username) {
                 return res.status(400).json({
                     success: false,
                     message: 'username aleready existed'
@@ -95,21 +95,28 @@ const getuser = async (req, res, next) => {
 }
 
 const updatUserProfile = async (req, res, next) => {
-    const {name, email} = req.body;
-    if (!email){
+    const { name, email } = req.body;
+    if (!email) {
         return res.sendStatus(503);
     }
-    const user = await userModel.findOne({email});
-    if (!user) {
-        return res.status(404).json({success: false, message: 'User not existed'});
+    try {
+        const user = await userModel.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not existed' });
+        }
+        const userr = await userModel.updateOne({ email }, { name });
+        res.status(200).json({
+            success: true,
+            message: 'Profile updated successfully',
+            userr
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error',
+        })
     }
-    const userr = await userModel.updateOne({email},{name});
-    res.status(200).json({
-        success: true,
-        message:'Profile updated successfully',
-        userr
-    })
-    
+
 }
 
 const logout = (req, res, next) => {
