@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 import { FaTrash, FaEdit } from 'react-icons/fa'
+import { toast } from 'react-toastify';
 
 const Task = ({ todo, fun, show=false }) => {
   const [isInputBox, setIsInputBox] = useState(false);
@@ -11,11 +12,12 @@ const Task = ({ todo, fun, show=false }) => {
     setInputBoxValue(todo.todo);
   }
   const handleSubmit = async () => {
-    await axios.put('https://mern-todoblocks.onrender.com/api/todo/update', { todo: inputBoxValue, _id: todo._id, token: sessionStorage.getItem('token') });
+    const res = await axios.put('https://mern-todoblocks.onrender.com/api/todo/update', { todo: inputBoxValue, _id: todo._id, token: sessionStorage.getItem('token') });
+    toast(res.data.message);
     fun();
     setIsInputBox(false);
   }
-
+  
   
   const handleCheckboxOnchange = async (e) => {
     let checked = e.target.checked;
@@ -31,7 +33,8 @@ const Task = ({ todo, fun, show=false }) => {
     setInputBoxValue(e.target.value);
   }
   const handleDelete = async (id) => {
-    await axios.delete('https://mern-todoblocks.onrender.com/api/todo/delete', { _id: id, token: sessionStorage.getItem('token') });
+    const res = await axios.post('https://mern-todoblocks.onrender.com/api/todo/delete', { _id: id, token: sessionStorage.getItem('token') });
+    toast(res.data.message);
     fun();
   }
   return (

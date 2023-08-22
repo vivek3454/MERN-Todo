@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Task from '../../components/Task';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Todo = () => {
   const [task, setTask] = useState('');
@@ -16,6 +17,7 @@ const Todo = () => {
     if (task !== '') {
       const { data: { data } } = await axios.post('https://mern-todoblocks.onrender.com/api/auth/user', { token: sessionStorage.getItem('token') });
       const res = await axios.post('https://mern-todoblocks.onrender.com/api/todo/create', { task, userId: data._id, token: sessionStorage.getItem('token') });
+      toast(res.data.message)
       fetchAllTask();
       setTask('');
     }
@@ -38,8 +40,8 @@ const Todo = () => {
         {
           allTodos.length !== 0 ?
             <div className="mt-10 mb-16 flex flex-col items-start w-full">
-              {allTodos.length !== 0 && allTodos.map((todo) => (
-                <Task key={todo.todo} todo={todo} fun={fetchAllTask} />
+              {allTodos.length !== 0 && allTodos.map((todo, index) => (
+                <Task key={index} todo={todo} fun={fetchAllTask} />
               ))}
             </div>
             :

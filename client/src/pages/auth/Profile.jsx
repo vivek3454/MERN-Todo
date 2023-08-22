@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import profile from '../../assets/profile.png'
+import { toast } from 'react-toastify';
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -41,7 +42,8 @@ const Profile = () => {
             return;
         }
         if (e.target.textContent === 'Submit' && updatedName !== '') {
-            const data = await axios.put('https://mern-todoblocks.onrender.com/api/auth/updatUserProfile', { name: updatedName, email: user.email, token: sessionStorage.getItem('token') });
+            const res = await axios.put('https://mern-todoblocks.onrender.com/api/auth/updatUserProfile', { name: updatedName, email: user.email, token: sessionStorage.getItem('token') });
+            toast(res.data.message);
             fetchUserDetail()
             setIsUpdate(false);
             setUpdatedName('');
