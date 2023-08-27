@@ -2,14 +2,17 @@ import React, { useEffect, useState } from 'react'
 import Task from '../../components/Task';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import spinner from '../../assets/spinner.svg';
 
 const Todo = () => {
   const [task, setTask] = useState('');
   const [allTodos, setAllTodos] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchAllTask = async () => {
     const { data: { data } } = await axios.post('https://mern-todoblocks.onrender.com/api/auth/user', { token: sessionStorage.getItem('token') });
     const res = await axios.post('https://mern-todoblocks.onrender.com/api/todo/allTodos', { userId: data._id, token: sessionStorage.getItem('token') });
+    setIsLoading(false);
     setAllTodos(res.data.todos)
   }
 
@@ -44,6 +47,8 @@ const Todo = () => {
                 <Task key={index} todo={todo} fun={fetchAllTask} />
               ))}
             </div>
+            :
+            (isLoading) ? <div className='mt-10 flex justify-center items-center min-h-[60vh]'><img src={spinner} className='w-16' alt="spinner" /></div>
             :
             <div className='mt-10 text-center'>No Tasks Found</div>
         }
