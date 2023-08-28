@@ -1,4 +1,5 @@
 const userModel = require("../model/user.model");
+const todoModel = require("../model/todo.model");
 const bcrypt = require('bcrypt');
 
 const signup = async (req, res, next) => {
@@ -26,12 +27,6 @@ const signup = async (req, res, next) => {
                     message: 'email address aleready existed'
                 })
             }
-            if (err.keyValue.username && err.keyValue.username === username) {
-                return res.status(400).json({
-                    success: false,
-                    message: 'username aleready existed'
-                })
-            }
         }
         return res.status(400).json({
             success: false,
@@ -46,7 +41,13 @@ const signin = async (req, res, next) => {
 
         const user = await userModel.findOne({ email }).select('+password');
 
-        if (!user || !(await bcrypt.compare(password, user.password))) {
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'user not found'
+            });
+        }
+        if (!(await bcrypt.compare(password, user.password))) {
             return res.status(400).json({
                 success: false,
                 message: 'invalid credentials'
@@ -104,11 +105,10 @@ const updatUserProfile = async (req, res, next) => {
         if (!user) {
             return res.status(404).json({ success: false, message: 'User not existed' });
         }
-        const userr = await userModel.updateOne({ email }, { name });
+        await userModel.updateOne({ email }, { name });
         res.status(200).json({
             success: true,
-            message: 'Profile updated successfully',
-            userr
+            message: 'Profile updated successfully'
         })
     } catch (error) {
         res.status(500).json({
@@ -117,6 +117,36 @@ const updatUserProfile = async (req, res, next) => {
         })
     }
 
+}
+
+const updatUserPassword = async (req, res) => {
+    const { email, password, newPassword } = req.body;
+    try {
+        const user = await userModel.findOne({ email }).select('+password');
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not existed' });
+        }
+       
+        const isCorrect = await bcrypt.compare(password, user.password);
+        if (isCorrect) {
+            await userModel.updateOne({ email }, { password: await bcrypt.hash(newPassword, 10) });
+            return res.status(200).json({
+                success: true,
+                message: 'Password updated successfully'
+            })
+        }
+        else {
+            res.status(400).json({
+                success: false,
+                message: 'please enter correct old password',
+            })
+        }
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error'
+        })
+    }
 }
 
 const logout = (req, res, next) => {
@@ -137,5 +167,21 @@ const logout = (req, res, next) => {
         });
     }
 }
+const deleteUser = async (req, res) => {
+   const {_id} = req.body;
+    try {
+        await userModel.findByIdAndDelete({_id})
+        await todoModel.deleteMany({userId: _id})
+        res.status(200).json({
+            success: true,
+            message: 'Account deleted successfully',
+        })
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
 
-module.exports = { signup, signin, getuser, updatUserProfile, logout };
+module.exports = { signup, signin, getuser, updatUserProfile, updatUserPassword, logout, deleteUser };
