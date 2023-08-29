@@ -1,17 +1,15 @@
-import { useState } from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Home from './pages/todos/Home'
-import SignUp from './pages/auth/SignUp'
-import SignIn from './pages/auth/SignIn'
-import Navbar from './components/Navbar'
-import Welcome from './pages/todos/Welcome'
-import AllTodos from './pages/todos/AllTodos'
-import Completed from './pages/todos/Completed'
-import Pending from './pages/todos/Pending'
-import Profile from './pages/auth/Profile'
-import NotFound from './pages/notFound/NotFound'
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Home from './pages/todos/Home';
+import SignUp from './pages/auth/SignUp';
+import SignIn from './pages/auth/SignIn';
+import Welcome from './pages/todos/Welcome';
+import AllTodos from './pages/todos/AllTodos';
+import Completed from './pages/todos/Completed';
+import Pending from './pages/todos/Pending';
+import Profile from './pages/auth/Profile';
+import NotFound from './pages/notFound/NotFound';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 

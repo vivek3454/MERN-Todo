@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import AllTodos from './AllTodos';
 import Welcome from './Welcome';
