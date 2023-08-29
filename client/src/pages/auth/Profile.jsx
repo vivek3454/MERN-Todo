@@ -24,10 +24,23 @@ const Profile = () => {
 
     const handleLogout = async (e) => {
         if (e.target.textContent === 'Yes') {
-            await axios.get('https://mern-todoblocks.onrender.com/api/auth/logout');
-            setLogoutPopup(false);
-            sessionStorage.clear();
-            navigate('/signin');
+            try {
+                await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/auth/logout`);
+                setLogoutPopup(false);
+                sessionStorage.removeItem('token');
+                navigate('/signin');
+            } catch (error) {
+                toast.error(error.response.data.message, {
+                    position: "top-center",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
         }
         else {
             setLogoutPopup(false);
@@ -36,20 +49,33 @@ const Profile = () => {
 
     const handleDeleteUser = async (e) => {
         if (e.target.textContent === 'Yes') {
-            const res = await axios.post('https://mern-todoblocks.onrender.com/api/auth/deleteUser', { _id: user.id, token: sessionStorage.getItem('token') });
-            toast.success(res.data.message, {
-                position: "top-center",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-            sessionStorage.clear();
-            navigate('/signup');
-            setDeletePopup(false);
+            try {
+                const res = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/auth/deleteUser`, { _id: user.id, token: sessionStorage.getItem('token') });
+                toast.success(res.data.message, {
+                    position: "top-center",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                sessionStorage.clear();
+                navigate('/signup');
+                setDeletePopup(false);
+            } catch (error) {
+                toast.error(error.response.data.message, {
+                    position: "top-center",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
         }
         else {
             setDeletePopup(false);
@@ -78,9 +104,24 @@ const Profile = () => {
             });
             return;
         }
-        const res = await axios.post('https://mern-todoblocks.onrender.com/api/auth/updatUserPassword', { email: user.email, password: oldPassword, newPassword, token: sessionStorage.getItem('token') });
-        if (res.data.success) {
-            toast.success(res.data.message, {
+        try {
+
+            const res = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/auth/updatUserPassword`, { email: user.email, password: oldPassword, newPassword, token: sessionStorage.getItem('token') });
+            if (res.data.success) {
+                toast.success(res.data.message, {
+                    position: "top-center",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                setChangePasswordPopup(false);
+            }
+        } catch (error) {
+            toast.error(error.response.data.message, {
                 position: "top-center",
                 autoClose: 1000,
                 hideProgressBar: false,
@@ -91,14 +132,26 @@ const Profile = () => {
                 theme: "light",
             });
         }
-        setChangePasswordPopup(false);
     }
 
 
     const fetchUserDetail = async () => {
-        const { data: { data } } = await axios.post('https://mern-todoblocks.onrender.com/api/auth/user', { token: sessionStorage.getItem('token') });
-        setIsLoading(false);
-        setUser({ name: data.name, email: data.email, id: data._id });
+        try {
+            const { data: { data } } = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/auth/user`, { token: sessionStorage.getItem('token') });
+            setIsLoading(false);
+            setUser({ name: data.name, email: data.email, id: data._id });
+        } catch (error) {
+            toast.error(error.response.data.message, {
+                position: "top-center",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
     }
     useEffect(() => {
         fetchUserDetail();
@@ -114,20 +167,33 @@ const Profile = () => {
             setUpdatedName('');
         }
         if (e.target.textContent === 'Submit' && updatedName !== '') {
-            const res = await axios.put('https://mern-todoblocks.onrender.com/api/auth/updatUserProfile', { name: updatedName, email: user.email, token: sessionStorage.getItem('token') });
-            toast.success(res.data.message, {
-                position: "top-center",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-            fetchUserDetail();
-            setIsUpdate(false);
-            setUpdatedName('');
+            try {
+                const res = await axios.put(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/auth/updatUserProfile`, { name: updatedName, email: user.email, token: sessionStorage.getItem('token') });
+                toast.success(res.data.message, {
+                    position: "top-center",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                fetchUserDetail();
+                setIsUpdate(false);
+                setUpdatedName('');
+            } catch (error) {
+                toast.error(error.response.data.message, {
+                    position: "top-center",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
         }
     }
 

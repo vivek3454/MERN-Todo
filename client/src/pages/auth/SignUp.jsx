@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
@@ -14,7 +14,7 @@ const SignUp = () => {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('https://mern-todoblocks.onrender.com/api/auth/signup', { ...userInfo });
+            await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/auth/signup`, { ...userInfo });
             navigate("/signin");
 
         } catch (error) {
@@ -40,7 +40,6 @@ const SignUp = () => {
                     {errorMessage && <p className="mb-3 text-sm text-red-600">*{errorMessage}</p>}
                     <div className='flex justify-center'>
                         <button type='submit' className="text-white bg-[#4CB5F9] active:bg-[#4CB5F9] border-0 w-full py-1 px-8 focus:outline-none hover:bg-[#369fe6] rounded-xl text-lg">Sign up</button>
-
                     </div>
                 </form>
                 <p className="text-gray-500 mt-3 text-center text-sm">Already have account? <Link to={'/signin'} className="text-blue-600" >Log in</Link></p>

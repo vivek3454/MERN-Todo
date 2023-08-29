@@ -19,19 +19,32 @@ const Task = ({ todo, fun, show = false }) => {
 
   const handleSubmit = async () => {
     if (inputBoxValue !== todo.todo) {
-      const res = await axios.put('https://mern-todoblocks.onrender.com/api/todo/update', { todo: inputBoxValue, _id: todo._id, token: sessionStorage.getItem('token') });
-      toast.success(res.data.message, {
-        position: "top-center",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      fun();
-      setIsInputBox(false);
+      try {
+        const res = await axios.put(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/todo/update`, { todo: inputBoxValue, _id: todo._id, token: sessionStorage.getItem('token') });
+        toast.success(res.data.message, {
+          position: "top-center",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        fun();
+        setIsInputBox(false);
+      } catch (error) {
+        toast.error(error.response.data.message, {
+          position: "top-center",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
     }
     else {
       toast.error('please enter new todo value', {
@@ -50,11 +63,25 @@ const Task = ({ todo, fun, show = false }) => {
 
   const handleCheckboxOnchange = async (e) => {
     let checked = e.target.checked;
-    if (checked) {
-      await axios.put('https://mern-todoblocks.onrender.com/api/todo/status', { _id: todo._id, completed: true, token: sessionStorage.getItem('token') });
-    }
-    else {
-      await axios.put('https://mern-todoblocks.onrender.com/api/todo/status', { _id: todo._id, completed: false, token: sessionStorage.getItem('token') });
+    try {
+
+      if (checked) {
+        await axios.put(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/todo/status`, { _id: todo._id, completed: true, token: sessionStorage.getItem('token') });
+      }
+      else {
+        await axios.put(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/todo/status`, { _id: todo._id, completed: false, token: sessionStorage.getItem('token') });
+      }
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   }
 
@@ -62,18 +89,32 @@ const Task = ({ todo, fun, show = false }) => {
     setInputBoxValue(e.target.value);
   }
   const handleDelete = async (id) => {
-    const res = await axios.post('https://mern-todoblocks.onrender.com/api/todo/delete', { _id: id, token: sessionStorage.getItem('token') });
-    toast.success(res.data.message, {
-      position: "top-center",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-    fun();
+    try {
+
+      const res = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/todo/delete`, { _id: id, token: sessionStorage.getItem('token') });
+      toast.success(res.data.message, {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      fun();
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   }
   return (
     <div className='max-w-3xl mb-5 w-full flex gap-1 relative'>
