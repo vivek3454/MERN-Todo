@@ -80,7 +80,7 @@ const updateTask = async (req, res, next) => {
 const getPendingTasks = async (req, res, next) => {
     try {
 
-        const pendingTodos = await todoModel.find({ completed: false });
+        const pendingTodos = await todoModel.find({ completed: false, userId: req.user.id });
 
         return res.status(200).json({
             success: true,
@@ -97,7 +97,7 @@ const getPendingTasks = async (req, res, next) => {
 const getcompletedTasks = async (req, res, next) => {
     try {
 
-        const completedTodos = await todoModel.find({ completed: true });
+        const completedTodos = await todoModel.find({ completed: true, userId: req.user.id });
 
         return res.status(200).json({
             success: true,
