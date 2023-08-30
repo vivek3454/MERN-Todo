@@ -71,6 +71,7 @@ const Task = ({ todo, fun, show = false }) => {
       else {
         await axios.put(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/todo/status`, { _id: todo._id, completed: false, token: sessionStorage.getItem('token') });
       }
+      fun();
     } catch (error) {
       toast.error(error.response.data.message, {
         position: "top-center",
