@@ -4,11 +4,11 @@ const { createTask, getAllTodos, deleteTask, updateTask, getPendingTasks, getcom
 const todoRouter = express.Router();
 
 todoRouter.post('/create', jwtAuth, createTask);
-todoRouter.post('/allTodos', jwtAuth, getAllTodos);
-todoRouter.post('/delete', jwtAuth, deleteTask);
+todoRouter.get('/allTodos', jwtAuth, getAllTodos);
+todoRouter.delete('/delete/:id', jwtAuth, deleteTask);
 todoRouter.put('/update', jwtAuth, updateTask);
-todoRouter.post('/pending', jwtAuth, getPendingTasks);
-todoRouter.post('/completed', jwtAuth, getcompletedTasks);
+todoRouter.get('/pending', jwtAuth, getPendingTasks);
+todoRouter.get('/completed', jwtAuth, getcompletedTasks);
 todoRouter.put('/status', jwtAuth, updateStatus);
 
 

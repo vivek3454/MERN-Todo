@@ -16,8 +16,7 @@ const SignIn = () => {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/auth/signin`, { ...userInfo, }, { credentials: 'true' });
-            sessionStorage.setItem('token', res.data.token);
+            const res = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/auth/signin`, { ...userInfo, }, { withCredentials: true });
             navigate("/");
 
         } catch (error) {

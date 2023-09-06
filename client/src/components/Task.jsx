@@ -17,10 +17,10 @@ const Task = ({ todo, fun, show = false }) => {
     return formatDistanceToNow(new Date(date), { addSuffix: true });
   };
 
-  const handleSubmit = async () => {
+  const handleUpdateSubmit = async () => {
     if (inputBoxValue !== todo.todo) {
       try {
-        const res = await axios.put(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/todo/update`, { todo: inputBoxValue, _id: todo._id, token: sessionStorage.getItem('token') });
+        const res = await axios.put(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/todo/update`, { todo: inputBoxValue, _id: todo._id }, { withCredentials: true });
         toast.success(res.data.message, {
           position: "top-center",
           autoClose: 1000,
@@ -66,10 +66,10 @@ const Task = ({ todo, fun, show = false }) => {
     try {
 
       if (checked) {
-        await axios.put(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/todo/status`, { _id: todo._id, completed: true, token: sessionStorage.getItem('token') });
+        await axios.put(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/todo/status`, { _id: todo._id, completed: true }, { withCredentials: true });
       }
       else {
-        await axios.put(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/todo/status`, { _id: todo._id, completed: false, token: sessionStorage.getItem('token') });
+        await axios.put(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/todo/status`, { _id: todo._id, completed: false }, { withCredentials: true });
       }
       fun();
     } catch (error) {
@@ -92,7 +92,7 @@ const Task = ({ todo, fun, show = false }) => {
   const handleDelete = async (id) => {
     try {
 
-      const res = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/todo/delete`, { _id: id, token: sessionStorage.getItem('token') });
+      const res = await axios.delete(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/todo/delete/${id}`, { withCredentials: true });
       toast.success(res.data.message, {
         position: "top-center",
         autoClose: 1000,
@@ -123,12 +123,12 @@ const Task = ({ todo, fun, show = false }) => {
         <div className='flex gap-2 items-center'>
           {!show && <input onChange={handleCheckboxOnchange} checked={todo.completed} type="checkbox" className={`accent-yellow-400`} width={20} height={30} />}
           {!isInputBox && <div className={`${todo.completed ? 'line-through' : ''}`} >{todo.todo}</div>}
-          {isInputBox && <input type="text" value={inputBoxValue} onChange={(e) => handleOnchange(e)} className='border-2 px-2 w-80' />}
+          {isInputBox && <input type="text" value={inputBoxValue} onChange={handleOnchange} className='border-2 px-2 w-80' />}
         </div>
         <div className='flex gap-5 items-center'>
           {isInputBox &&
             <div>
-              <button onClick={handleSubmit} className='px-1 mr-2 bg-yellow-400 rounded-md font-semibold'>Submit</button>
+              <button onClick={handleUpdateSubmit} className='px-1 mr-2 bg-yellow-400 rounded-md font-semibold'>Submit</button>
               <button onClick={() => setIsInputBox(false)} className='px-1 bg-yellow-400 rounded-md font-semibold'>Cancel</button>
             </div>
           }

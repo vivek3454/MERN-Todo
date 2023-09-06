@@ -25,9 +25,8 @@ const Profile = () => {
     const handleLogout = async (e) => {
         if (e.target.textContent === 'Yes') {
             try {
-                await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/auth/logout`);
+                await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/auth/logout`, { withCredentials: true });
                 setLogoutPopup(false);
-                sessionStorage.removeItem('token');
                 navigate('/signin');
             } catch (error) {
                 toast.error(error.response.data.message, {
@@ -50,7 +49,7 @@ const Profile = () => {
     const handleDeleteUser = async (e) => {
         if (e.target.textContent === 'Yes') {
             try {
-                const res = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/auth/deleteUser`, { _id: user.id, token: sessionStorage.getItem('token') });
+                const res = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/auth/deleteUser`, { withCredentials: true });
                 toast.success(res.data.message, {
                     position: "top-center",
                     autoClose: 1000,
@@ -61,7 +60,6 @@ const Profile = () => {
                     progress: undefined,
                     theme: "light",
                 });
-                sessionStorage.clear();
                 navigate('/signup');
                 setDeletePopup(false);
             } catch (error) {
@@ -106,7 +104,7 @@ const Profile = () => {
         }
         try {
 
-            const res = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/auth/updatUserPassword`, { email: user.email, password: oldPassword, newPassword, token: sessionStorage.getItem('token') });
+            const res = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/auth/updatUserPassword`, { email: user.email, password: oldPassword, newPassword }, { withCredentials: true });
             if (res.data.success) {
                 toast.success(res.data.message, {
                     position: "top-center",
@@ -137,7 +135,7 @@ const Profile = () => {
 
     const fetchUserDetail = async () => {
         try {
-            const { data: { data } } = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/auth/user`, { token: sessionStorage.getItem('token') });
+            const { data: { data } } = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/auth/user`, { withCredentials: true });
             setIsLoading(false);
             setUser({ name: data.name, email: data.email, id: data._id });
         } catch (error) {
@@ -168,7 +166,7 @@ const Profile = () => {
         }
         if (e.target.textContent === 'Submit' && updatedName !== '') {
             try {
-                const res = await axios.put(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/auth/updatUserProfile`, { name: updatedName, email: user.email, token: sessionStorage.getItem('token') });
+                const res = await axios.put(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/auth/updatUserProfile`, { name: updatedName, email: user.email }, { withCredentials: true });
                 toast.success(res.data.message, {
                     position: "top-center",
                     autoClose: 1000,

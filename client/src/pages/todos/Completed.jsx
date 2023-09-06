@@ -7,17 +7,13 @@ import { useNavigate } from 'react-router-dom';
 const Completed = () => {
   const [completedTodos, setCompletedTodos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [filterOption, setFilterOption] = useState('new');
+  const [filterOption, setFilterOption] = useState('old');
   const navigate = useNavigate();
-  const fetchAllTask = async () => {
-    const { data: { data } } = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/auth/user`, { token: sessionStorage.getItem('token') });
-    const res = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/todo/allTodos`, { userId: data._id, token: sessionStorage.getItem('token') });
-    setCompletedTodos(res.data.todos);
-  }
+  
   useEffect(() => {
     const fetchCompletedTask = async () => {
       try {
-        const res = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/todo/completed`, { token: sessionStorage.getItem('token') });
+        const res = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/todo/completed`, { withCredentials: true });
         setIsLoading(false);
         setCompletedTodos(res.data.completedTodos);
       } catch (error) {
@@ -30,10 +26,11 @@ const Completed = () => {
     fetchCompletedTask();
   }, [])
 
-  const handleFilterChange = (e) => {
+  const handleFilterOptionChange = (e) => {
     setFilterOption(e.target.value);
   }
 
+  // filter todos
   useEffect(() => {
     const filteredTodos = completedTodos.slice()
       .sort((a, b) => {
@@ -43,7 +40,7 @@ const Completed = () => {
           return new Date(b.createdAt) - new Date(a.createdAt);
         }
       });
-    setCompletedTodos(filteredTodos)
+    setCompletedTodos(filteredTodos);
   }, [filterOption])
 
   return (
@@ -52,7 +49,7 @@ const Completed = () => {
         completedTodos.length !== 0 &&
         <div className="mt-10 flex flex-col items-center w-full">
           {completedTodos.length !== 0 && completedTodos.map((todo) => (
-            <Task key={todo.todo} todo={todo} show={true} fun={fetchAllTask} />
+            <Task key={todo.todo} todo={todo} show={true} fun={()=>{}} />
           ))}
         </div>
       }
@@ -61,7 +58,7 @@ const Completed = () => {
       {completedTodos.length > 0 && <div className='absolute -top-10 left-16'>
         <label>
           Filter by :
-          <select value={filterOption} onChange={handleFilterChange}>
+          <select value={filterOption} onChange={handleFilterOptionChange}>
             <option value="new">New</option>
             <option value="old">Old</option>
           </select>

@@ -3,38 +3,20 @@ import Task from '../../components/Task';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import spinner from '../../assets/spinner.svg';
-import { useNavigate } from 'react-router-dom';
 
 const Todo = () => {
   const [task, setTask] = useState('');
   const [allTodos, setAllTodos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
   const [filterOption, setFilterOption] = useState('new');
 
   const fetchAllTask = async () => {
     try {
-      const { data: { data } } = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/auth/user`, { token: sessionStorage.getItem('token') });
-      const res = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/todo/allTodos`, { userId: data._id, token: sessionStorage.getItem('token') });
+      const res = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/todo/allTodos`, { withCredentials: true });
       setIsLoading(false);
-      if (allTodos.length !== res.data.todos.length) {
-        setAllTodos(res.data.todos);
-      }
+      setAllTodos(res.data.todos);
     } catch (error) {
       setIsLoading(false);
-      if (error.response.data.error) {
-        navigate("/login");
-      }
-      toast.error(error.response.data.message, {
-        position: "top-center",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
     }
   }
 
@@ -47,45 +29,28 @@ const Todo = () => {
           return new Date(b.createdAt) - new Date(a.createdAt);
         }
       });
-    setAllTodos(filteredTodos)
+    setAllTodos(filteredTodos);
   }, [filterOption])
 
-  const handleFilterChange = (e) => {
+  const handleFilterOptionChange = (e) => {
     setFilterOption(e.target.value);
   }
 
   const handleAddTask = async () => {
     if (task !== '') {
-      try {
-        const { data: { data } } = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/auth/user`, { token: sessionStorage.getItem('token') });
-        const res = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/todo/create`, { task, userId: data._id, token: sessionStorage.getItem('token') });
-        toast.success(res.data.message, {
-          position: "top-center",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        fetchAllTask();
-        setTask('');
-      } catch (error) {
-        if (error.response.data.error) {
-          navigate("/login");
-        }
-        toast.error(error.response.data.message, {
-          position: "top-center",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
+      const res = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/todo/create`, { task }, {withCredentials: true});
+      toast.success(res.data.message, {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      fetchAllTask();
+      setTask('');
     }
   }
 
@@ -119,7 +84,7 @@ const Todo = () => {
       <div className='absolute top-0 left-[204px]'>
         <label>
           Filter by :
-          <select value={filterOption} onChange={handleFilterChange}>
+          <select value={filterOption} onChange={handleFilterOptionChange}>
             <option value="new">New</option>
             <option value="old">Old</option>
           </select>

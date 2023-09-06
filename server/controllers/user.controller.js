@@ -126,7 +126,7 @@ const updatUserPassword = async (req, res) => {
         if (!user) {
             return res.status(404).json({ success: false, message: 'User not existed' });
         }
-       
+
         const isCorrect = await bcrypt.compare(password, user.password);
         if (isCorrect) {
             await userModel.updateOne({ email }, { password: await bcrypt.hash(newPassword, 10) });
@@ -168,10 +168,15 @@ const logout = (req, res, next) => {
     }
 }
 const deleteUser = async (req, res) => {
-   const {_id} = req.body;
+    const { id } = req.user;
+    const cookieOption = {
+        expires: new Date(),
+        httpOnly: true
+    }
     try {
-        await userModel.findByIdAndDelete({_id})
-        await todoModel.deleteMany({userId: _id})
+        await userModel.findByIdAndDelete({ _id: id });
+        await todoModel.deleteMany({ userId: id });
+        res.cookie('token', null, cookieOption);
         res.status(200).json({
             success: true,
             message: 'Account deleted successfully',

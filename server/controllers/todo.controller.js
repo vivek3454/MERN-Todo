@@ -2,14 +2,15 @@ const todoModel = require("../model/todo.model");
 
 const createTask = async (req, res, next) => {
     try {
-        const { task, userId } = req.body;
-        if (!task || !userId) {
+        const { task } = req.body;
+        const { id } = req.user;
+        if (!task) {
             return res.status(200).json({
                 success: false,
                 message: "All fields are required"
             })
         }
-        const todos = await todoModel.create({ todo: task, userId });
+        await todoModel.create({ todo: task, userId: id });
         return res.status(200).json({
             success: true,
             message:"Task created successfully"
@@ -26,8 +27,8 @@ const createTask = async (req, res, next) => {
 const getAllTodos = async (req, res, next) => {
     try {
 
-        const { userId } = req.body;
-        const todos = await todoModel.find({ userId });
+        const { id } = req.user;
+        const todos = await todoModel.find({ userId: id });
 
         return res.status(200).json({
             success: true,
@@ -45,8 +46,8 @@ const getAllTodos = async (req, res, next) => {
 const deleteTask = async (req, res, next) => {
     try {
 
-        const { _id } = req.body;
-        const todos = await todoModel.findByIdAndDelete({ _id });
+        const { id } = req.params;
+        await todoModel.findByIdAndDelete({ _id: id });
 
         return res.status(200).json({
             success: true,
