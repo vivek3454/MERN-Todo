@@ -139,6 +139,7 @@ const Profile = () => {
             setIsLoading(false);
             setUser({ name: data.name, email: data.email, id: data._id });
         } catch (error) {
+            navigate("/signin")
             toast.error(error.response.data.message, {
                 position: "top-center",
                 autoClose: 1000,
