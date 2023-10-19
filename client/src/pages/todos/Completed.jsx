@@ -45,6 +45,15 @@ const Completed = () => {
 
   return (
     <div className='max-w-4xl w-full mx-auto relative'>
+      {completedTodos.length > 0 && <div>
+        <label>
+          Filter by :
+          <select value={filterOption} onChange={handleFilterOptionChange}>
+            <option value="new">New</option>
+            <option value="old">Old</option>
+          </select>
+        </label>
+      </div>}
       {
         completedTodos.length !== 0 &&
         <div className="mt-10 flex flex-col items-center w-full">
@@ -55,15 +64,6 @@ const Completed = () => {
       }
       {!isLoading && completedTodos.length === 0 && <div className='mt-10 text-center'>No Tasks Found</div>}
       {isLoading && <div className='mt-10 flex justify-center items-center min-h-[60vh]'><img src={spinner} className='w-16' alt="spinner" /></div>}
-      {completedTodos.length > 0 && <div className='absolute -top-10 left-16'>
-        <label>
-          Filter by :
-          <select value={filterOption} onChange={handleFilterOptionChange}>
-            <option value="new">New</option>
-            <option value="old">Old</option>
-          </select>
-        </label>
-      </div>}
     </div>
   )
 }

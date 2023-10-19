@@ -1,9 +1,4 @@
-import { Link, Route, Routes, useLocation } from 'react-router-dom';
-import AllTodos from './AllTodos';
-import Welcome from './Welcome';
-import Pending from './Pending';
-import Completed from './Completed';
-import Profile from '../auth/Profile';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { FcTodoList } from 'react-icons/fc';
 import { IoMdDoneAll } from 'react-icons/io';
 import { MdPendingActions } from 'react-icons/md';
@@ -12,7 +7,7 @@ import Navbar from '../../components/Navbar';
 
 const Home = () => {
     const { pathname } = useLocation();
-    
+
     return (
         <>
             <Navbar />
@@ -38,14 +33,7 @@ const Home = () => {
                     </div>
                 </div>
                 <div className='max-w-7xl w-full p-8 max-[500px]:p-2'>
-
-                    <Routes>
-                        <Route index path='/' element={<Welcome />} />
-                        <Route path='/todo' element={<AllTodos />} />
-                        <Route path='/completed' element={<Completed />} />
-                        <Route path='/pending' element={<Pending />} />
-                        <Route path='/profile' element={<Profile />} />
-                    </Routes>
+                    <Outlet />
                 </div>
             </div>
         </>

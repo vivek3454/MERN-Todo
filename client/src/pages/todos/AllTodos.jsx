@@ -68,6 +68,15 @@ const Todo = () => {
           <input value={task} onChange={(e) => setTask(e.target.value)} type="text" className='w-full h-16 px-3 rounded-md border-2' placeholder='Enter your task' />
           <button onClick={handleAddTask} className='px-5 rounded-md font-semibold bg-yellow-400'>Add</button>
         </div>
+        <div>
+        <label>
+          Filter by :
+          <select value={filterOption} onChange={handleFilterOptionChange}>
+            <option value="new">New</option>
+            <option value="old">Old</option>
+          </select>
+        </label>
+      </div>
         {
           allTodos.length !== 0 ?
             <div className="mt-10 mb-16 flex flex-col items-start w-full">
@@ -81,7 +90,7 @@ const Todo = () => {
               <div className='mt-10 text-center'>No Tasks Found</div>
         }
       </div>
-      <div className='absolute top-0 left-[204px]'>
+      {/* <div className='absolute top-0 left-[204px]'>
         <label>
           Filter by :
           <select value={filterOption} onChange={handleFilterOptionChange}>
@@ -89,7 +98,7 @@ const Todo = () => {
             <option value="old">Old</option>
           </select>
         </label>
-      </div>
+      </div> */}
     </div>
   )
 }

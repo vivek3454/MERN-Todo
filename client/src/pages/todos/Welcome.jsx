@@ -1,13 +1,5 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const Welcome = () => {
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!sessionStorage.getItem('token')) {
-      navigate('/signin');
-    }
-  }, [])
   return (
     <div className='text-3xl font-semibold flex items-center max-w-md mx-auto text-center h-full'>
       <div>
